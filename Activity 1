@@ -82,9 +82,9 @@ CREATE TABLE trainor(
     REFERENCES client (client_id)
  );
 
-INSERT (client_id, fname, lname) INTO client (1. "Eusebio", "herlyn"), (2. "Gatudla", "leng"), (3. "gatdula", "mhaine");
-INSERT (date, time_start, activity) INTO schedule ("2022-01-02", "2:00pm", "walking"), ("2023-02-01", "3:00pm", "running"), ("2021-03-01", "5:00pm", "push-up");
-INSERT (name) INTO trainor ("kkk", "jjj", "lll");
-INSERT (total_amount) INTO reports ("php1000", "php2000", "php3000");
-INSERT (amount) INTO ("php200", "php300", "php100");
-INSERT (status) INTO membership ("Active", "Inactive", "Active"); 
+INSERT  INTO client (client_id, fname, lname)  VALUES (1. "Eusebio", "herlyn"), (2. "Gatudla", "leng"), (3. "gatdula", "mhaine");
+INSERT INTO schedule (date, time_start, activity)  VALUES ("2022-01-02", "2:00pm", "walking"), ("2023-02-01", "3:00pm", "running"), ("2021-03-01", "5:00pm", "push-up");
+INSERT INTO trainor(name) VALUES ("kkk", "jjj", "lll");
+INSERT INTO reports (total_amount) VALUES ("php1000", "php2000", "php3000");
+INSERT INTO payment  (amount) VALUES ("php200", "php300", "php100");
+INSERT INTO membership (status) VALUES ("Active", "Inactive", "Active");              
