@@ -1,0 +1,90 @@
+DROP DATABASE gyt;
+CREATE DATABASE gyt;
+use gyt;
+
+CREATE TABLE client (
+	client_id int PRIMARY KEY AUTO_INCREMENT,
+    fname varchar(255),
+    lname varchar(255),
+    gender ENUM ('female','male') DEFAULT 'male',
+    age int,
+    contact_add varchar(255),
+    email varchar(255),
+    password varchar(255)
+
+);
+
+CREATE TABLE transaction_records(
+	trans_id INT PRIMARY KEY AUTO_INCREMENt,
+    transname varchar(255),
+    client_id int,
+    amount int,
+    date date,
+    CONSTRAINT FKclientID FOREIGN KEY (client_id)
+    REFERENCES client(client_id)
+
+
+);
+
+CREATE TABLE reports(
+	report_id INT PRIMARY KEY AUTO_INCREMENT,
+    total_amount varchar (255),
+    date date,
+    client_id int,
+    trans_id int,    
+	CONSTRAINT FKreportclientID FOREIGN KEY (client_id)
+    REFERENCES client(client_id),
+	CONSTRAINT FKtransID FOREIGN KEY (trans_id)
+    REFERENCES transaction_records(trans_id)
+
+);
+CREATE TABLE trainor(
+    trans_id INT PRIMARY KEY AUTO_INCREMENT,
+    name varchar (255),
+    sched_id int,
+    salary int,
+    email varchar (255),
+    password varchar (255),
+    CONSTAINT fksched_id FOREIGN KEY (sched_id)
+    REFERENCES schedule (sched_id)
+);
+
+ CREATE TABLE schedule(
+    sched_id INT PRIMARY KEY AUTO_INCREMENT,
+    client_id int,
+    trainor_id int,
+    session varchar(255),
+    activity varchar(255),
+    date date,
+    time_start time,
+    time_end time,
+    CONSTRAINT fkschedclient_id FOREIGN KEY (client_id)
+    REFERENCES client (client_id)
+    CONSTRAINT fktrainor_id FOREIGN KEY (tainor_id)
+    REFERENCES trainor (trainor_id)
+ );
+
+ CREATE TABLE payment(
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    client_id int,
+    date date,
+    amount int,
+    CONSTRAINT fkpayclient_id FOREIGN KEY (client_id)
+    REFERENCES client (client_id)
+ );
+
+ CREATE TABLE membership(
+    men_id INT PRIMARY KEY AUTO_INCREMENT,
+    client_id int,
+    status varchar (255),
+    date date,
+    CONSTRAINT fkmemclient_id FOREIGN KEY (client_id)
+    REFERENCES client (client_id)
+ );
+
+INSERT (client_id, fname, lname) INTO client (1. "Eusebio", "herlyn"), (2. "Gatudla", "leng"), (3. "gatdula", "mhaine");
+INSERT (date, time_start, activity) INTO schedule ("2022-01-02", "2:00pm", "walking"), ("2023-02-01", "3:00pm", "running"), ("2021-03-01", "5:00pm", "push-up");
+INSERT (name) INTO trainor ("kkk", "jjj", "lll");
+INSERT (total_amount) INTO reports ("php1000", "php2000", "php3000");
+INSERT (amount) INTO ("php200", "php300", "php100");
+INSERT (status) INTO membership ("Active", "Inactive", "Active"); 
