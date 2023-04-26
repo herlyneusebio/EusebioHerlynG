@@ -22,8 +22,6 @@ CREATE TABLE transaction_records(
     date date,
     CONSTRAINT FKclientID FOREIGN KEY (client_id)
     REFERENCES client(client_id)
-
-
 );
 
 CREATE TABLE reports(
@@ -36,55 +34,72 @@ CREATE TABLE reports(
     REFERENCES client(client_id),
 	CONSTRAINT FKtransID FOREIGN KEY (trans_id)
     REFERENCES transaction_records(trans_id)
-
 );
-CREATE TABLE trainor(
-    trans_id INT PRIMARY KEY AUTO_INCREMENT,
+
+CREATE TABLE trainor (
+    trainor_id INT PRIMARY KEY AUTO_INCREMENT,
     name varchar (255),
     sched_id int,
     salary int,
-    email varchar (255),
-    password varchar (255),
-    CONSTAINT fksched_id FOREIGN KEY (sched_id)
-    REFERENCES schedule (sched_id)
+    email varchar(255),
+    password varchar (255)
+
 );
 
- CREATE TABLE schedule(
+CREATE TABLE schedule(
     sched_id INT PRIMARY KEY AUTO_INCREMENT,
     client_id int,
     trainor_id int,
-    session varchar(255),
-    activity varchar(255),
+    session varchar (255),
+    activity varchar (255),
     date date,
     time_start time,
     time_end time,
-    CONSTRAINT fkschedclient_id FOREIGN KEY (client_id)
+    CONSTRAINT FKschedclientID FOREIGN KEY (client_id)
     REFERENCES client (client_id)
-    CONSTRAINT fktrainor_id FOREIGN KEY (tainor_id)
-    REFERENCES trainor (trainor_id)
- );
+);
 
- CREATE TABLE payment(
+CREATE TABLE payment (
     payment_id INT PRIMARY KEY AUTO_INCREMENT,
     client_id int,
     date date,
     amount int,
-    CONSTRAINT fkpayclient_id FOREIGN KEY (client_id)
+    CONSTRAINT FKpayclientID FOREIGN KEY (client_id)
     REFERENCES client (client_id)
- );
+);
 
- CREATE TABLE membership(
-    men_id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE membership (
+    mem_id INT PRIMARY KEY AUTO_INCREMENT,
     client_id int,
     status varchar (255),
     date date,
-    CONSTRAINT fkmemclient_id FOREIGN KEY (client_id)
+    CONSTRAINT FKmemclientID FOREIGN KEY (client_id)
     REFERENCES client (client_id)
- );
+);
 
-INSERT  INTO client (client_id, fname, lname)  VALUES (1. "Eusebio", "herlyn"), (2. "Gatudla", "leng"), (3. "gatdula", "mhaine");
-INSERT INTO schedule (date, time_start, activity)  VALUES ("2022-01-02", "2:00pm", "walking"), ("2023-02-01", "3:00pm", "running"), ("2021-03-01", "5:00pm", "push-up");
-INSERT INTO trainor(name) VALUES ("kkk", "jjj", "lll");
-INSERT INTO reports (total_amount) VALUES ("php1000", "php2000", "php3000");
-INSERT INTO payment  (amount) VALUES ("php200", "php300", "php100");
-INSERT INTO membership (status) VALUES ("Active", "Inactive", "Active");              
+
+INSERT INTO client (client_id, fname, lname) VALUES (1,'Cathyrine Rose','Gatdula'),(2,'Rhenz Jacob','Gatdula'),(3,'Arjay','Gatdula');
+INSERT INTO schedule (date, time_start, session, activity) VALUES ('01-02-03', '2:00 pm', '1', 'push-up'),('02-02-01', '4:00 pm', '2', 'running'),('04-02-02', '3:00 pm', '3', 'swimming');
+INSERT INTO trainor (trainor_id,name) VALUES (1,'Borja'),(2,'Eusebio'),(3,'Ablog');
+INSERT INTO reports (total_amount) VALUES ('2,000php'),('3,000php'),('4,000php');
+INSERT INTO payment (client_id,amount) VALUES (1,'5000'),(2,'6000'),(3,'7000');
+INSERT INTO membership (client_id,status) VALUES (1,'Active'),(2,'Inactive'),(3,'Active');
+
+SELECT c.fname, c.lname, s.session, s.activity, s.date, s.time_start, s.time_end, t.name 
+FROM schedule s
+INNER JOIN client c ON c.client_id = s.client_id 
+INNER JOIN trainor t ON t.trainor_id = s.trainor_id;
+
+
+
+
+SELECT client.fname, client.lname, 
+    IFNULL(SUM(transaction_records.amount), 0) AS total_amount_to_pay, 
+    IFNULL(payment.amount, 0) AS amount_paid, 
+    IFNULL(membership.status, 'INACTIVE') AS active_membership
+FROM client
+LEFT JOIN transaction_records ON client.client_id = transaction_records.client_id
+LEFT JOIN payment ON client.client_id = payment.client_id
+LEFT JOIN membership ON client.client_id = membership.client_id
+GROUP BY client.client_id;
+
