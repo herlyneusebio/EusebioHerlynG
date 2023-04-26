@@ -103,3 +103,22 @@ LEFT JOIN payment ON client.client_id = payment.client_id
 LEFT JOIN membership ON client.client_id = membership.client_id
 GROUP BY client.client_id;
 
+SELECT CONCAT(c.fname, '', c.lname )AS client_fullname, t.name, p.amount,
+SUM(CASE WHEN s.date < CURDATE()THEN 0 ELSE p.amount END) AS total_amount_to_pay
+FROM client c
+INNER JOIN schedule s ON c.client_id = s.client_id
+INNER JOIN  trainor t ON s.trainor_id = t.trainor_ID
+INNER JOIN payment p ON c.client_id = p.client_id
+GROUP BY c.client_id, t.trainor_id
+
+SELECT
+trainor.name AS 'Trainor Name',
+client.fname AS 'Client First Name',
+schedule.session AS 'session',
+schedule.time_start AS 'Time Start',
+schedule.time_end AS 'Time End'
+FROM 
+trainor
+INNER JOIN schedule ON trainor.trainor_id = schedule.trainor_id
+INNER JOIN client ON schedule.client_id = client.client_id
+ORDER BY trainor.name  ASC;
